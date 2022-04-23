@@ -1,6 +1,8 @@
 #pragma once
+
 #include <SFML/Graphics.hpp>
 #include "Bat.h";
+
 using namespace sf;
 
 

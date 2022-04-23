@@ -42,30 +42,16 @@ int main()
     textScore.setPosition(20, 20);
     textLife.setPosition(20, 80);
 
-
+    // 윈도우 생성
     RenderWindow window(VideoMode(1920, 1080), "Pong!", Style::Fullscreen);
-    /*RectangleShape blks[rows][col];
-    blocks(blks);*/
+    //window.setFramerateLimit(60); // 주어진 프레임 비율로 실행
     
     Bat bat(1920.f * 0.5f, 1080.f - 100.f);
     Ball ball(1920.f * 0.5f, 970.f, bat);
-    //brick brick(50.f, 50.f);
 
     brickMgr brickArr(ySize, xSize);
 
     int aSize = ySize * xSize;
-
-    /*for (int i = 0; i < xSize; i++)
-    {
-        for (int j = 0; j < ySize; j++)
-        {
-            brickArr(&i, &j);
-        }
-    }*/
-    
-
-    // ㅇㅇㅇ
-    // brickMgr bricks(0, 0);
 
     bool prevColSide = false;
     bool prevColTop = false;
@@ -73,118 +59,120 @@ int main()
 
     bool prevColBri = false;
 
-    Clock clock;
+    Clock clock; // 시계 시작
 
     int score = 0;
     int life = 3;
 
-    while (window.isOpen())
+    // 게임루프
+    while (window.isOpen()) // window가 오픈되어있는동안 프로그램을 실행
     {
-        Time dt = clock.restart();
+        Time dt = clock.restart(); // 시계를 다시 시작
         float deltaTime = dt.asSeconds();
 
+        // 사용자 이벤트 처리
         Event event;
-        while (window.pollEvent(event))
+
+        while (window.pollEvent(event)) // pollEvent : 이벤트가 처리대기중이면 true
         {
             if (event.type == Event::Closed)
                 window.close();
+
         }
-
-        Vector2f a = ball.GetSpeed();
-
-        //input
-        Sides dir = Sides::NONE;
-        if (Keyboard::isKeyPressed(Keyboard::Left))
-        {
-            if (!ball.IsMoving())
+            // input
+            Sides dir = Sides::NONE;
+            if (Keyboard::isKeyPressed(Keyboard::Left))
             {
-                ball.MoveBall(true, Keyboard::Left);
+                if (!ball.IsMoving())
+                {
+                    ball.MoveBall(true, Keyboard::Left);
+                }
+
+                dir = Sides::LEFT;
             }
 
-            dir = Sides::LEFT;
-        }
-
-        if (Keyboard::isKeyPressed(Keyboard::Right))
-        {
-            if (!ball.IsMoving())
+            if (Keyboard::isKeyPressed(Keyboard::Right))
             {
-                ball.MoveBall(true, Keyboard::Right);
+                if (!ball.IsMoving())
+                {
+                    ball.MoveBall(true, Keyboard::Right);
+                }
+                dir = Sides::RIGHT;
             }
-            dir = Sides::RIGHT;
-        }
 
-        bat.SetMoveDir(dir);
+            bat.SetMoveDir(dir);
 
-        FloatRect ballBound = ball.GetGlobalBounds();
-        Vector2u windowSize = window.getSize();
+            FloatRect ballBound = ball.GetGlobalBounds();
+            Vector2u windowSize = window.getSize();
 
-        bool colSide = ballBound.left < 0.f || ballBound.left + ballBound.width > windowSize.x;
-        bool colTop = ballBound.top < 0.f;
-        bool colBat = ballBound.intersects(bat.GetGlobalBounds());
+            bool colSide = ballBound.left < 0.f || ballBound.left + ballBound.width > windowSize.x;
+            bool colTop = ballBound.top < 0.f;
+            bool colBat = ballBound.intersects(bat.GetGlobalBounds());
 
-        //오른쪽, 왼쪽 벽에 부딪혔을때.
-        if (!prevColSide && colSide)
-        {
-            ball.ReboundSides();
-        }
+            //오른쪽, 왼쪽 벽에 부딪혔을때.
+            if (!prevColSide && colSide)
+            {
+                ball.ReboundSides();
+            }
 
-        if (!prevColTop && colTop)
-        {
-            ball.ReboundBatOrTop();
-        }
-
-        if (!prevColBat && colBat)
-        {
-            ball.ReboundBatOrTop();
-        }
-
-        else if (ballBound.top + ballBound.height > windowSize.y)
-        {
-            ball.Reboundbottom();
-            life--;
-        }
-
-        for (int i = 0; i < aSize; i++)
-        {
-            bool colBri = ballBound.intersects(brickArr.GetGlobalBounds(i));
-
-            if (!prevColBri && colBri)
+            if (!prevColTop && colTop)
             {
                 ball.ReboundBatOrTop();
-
-                //brickArr.brickArray[i] = NULLptr;
-
-                for (int j = i; j < aSize - 1; j++)
-                {
-                    brickArr.brickArray[j] = brickArr.brickArray[j + 1];
-                }
-                //delete[i] brickArr.brickArray;
-                --aSize;
-                score++;
             }
-            prevColBri = colBri;
-        }
 
-        prevColSide = colSide;
-        prevColTop = colTop;
-        prevColBat = colBat;
+            if (!prevColBat && colBat)
+            {
+                ball.ReboundBatOrTop();
+            }
+
+            else if (ballBound.top + ballBound.height > windowSize.y)
+            {
+                ball.Reboundbottom();
+                life--;
+            }
+
+            for (int i = 0; i < aSize; i++)
+            {
+                bool colBri = ballBound.intersects(brickArr.GetGlobalBounds(i));
+
+                if (!prevColBri && colBri)
+                {
+                    ball.ReboundBatOrTop();
+
+                    //brickArr.brickArray[i] = NULLptr;
+
+                    for (int j = i; j < aSize - 1; j++)
+                    {
+                        brickArr.brickArray[j] = brickArr.brickArray[j + 1];
+                    }
+                    //delete[i] brickArr.brickArray;
+                    --aSize;
+                    score++;
+                }
+                prevColBri = colBri;
+            }
+
+            prevColSide = colSide;
+            prevColTop = colTop;
+            prevColBat = colBat;
 
 
-        //update
-        bat.Update(deltaTime);
-        ball.Update(deltaTime);
+            //update
+            bat.Update(deltaTime);
+            ball.Update(deltaTime);
 
-        stringstream ss;
-        ss << "Score = " << score;
-        textScore.setString(ss.str());
+            stringstream ss;
+            ss << "Score = " << score;
+            textScore.setString(ss.str());
 
-        stringstream ls;
-        ls << "Life = " << life;
-        textLife.setString(ls.str());
+            stringstream ls;
+            ls << "Life = " << life;
+            textLife.setString(ls.str());
 
-
+        
         //draw
         window.clear();
+
         window.draw(bat.GetShape());
         window.draw(ball.GetShape());
 
@@ -195,12 +183,6 @@ int main()
         {
             window.draw(brickArr.GetShape(i));
         }
-
-        //DrawBlocks(blks);
-
-        //window.draw(bricks.GetShape(0));
-
-        //delete[] brickArr.brickArray;
 
         window.display();
     }
