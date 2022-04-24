@@ -5,9 +5,7 @@
 
 using namespace sf;
 
-
-
-class Ball //얘는 지가 알아서 움직이드라~
+class Ball
 {
 private:
 	bool isMoving = false;

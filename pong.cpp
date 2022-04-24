@@ -17,6 +17,7 @@ using namespace std;
 
 int main()
 {
+    
     Font fontDIGI; // 폰트 파일 불러옴
     fontDIGI.loadFromFile("fonts/DS-DIGI.TTF");
 
@@ -64,6 +65,7 @@ int main()
     int score = 0;
     int life = 3;
 
+
     // 게임루프
     while (window.isOpen()) // window가 오픈되어있는동안 프로그램을 실행
     {
@@ -79,6 +81,11 @@ int main()
                 window.close();
 
         }
+            if (Keyboard::isKeyPressed(Keyboard::Escape))
+            {
+                window.close();
+            }
+
             // input
             Sides dir = Sides::NONE;
             if (Keyboard::isKeyPressed(Keyboard::Left))
@@ -109,6 +116,11 @@ int main()
             bool colTop = ballBound.top < 0.f;
             bool colBat = ballBound.intersects(bat.GetGlobalBounds());
 
+            //양옆          
+            /*shapeLS.setPosition(0.f, 0.f);
+            shapeRS.setSize(Vector2f(1920, 380));*/
+            //shapeRS.setPosition(270.f, 0.f);
+                     
             //오른쪽, 왼쪽 벽에 부딪혔을때.
             if (!prevColSide && colSide)
             {
@@ -132,20 +144,27 @@ int main()
             }
 
             for (int i = 0; i < aSize; i++)
-            {
+            {            
                 bool colBri = ballBound.intersects(brickArr.GetGlobalBounds(i));
 
                 if (!prevColBri && colBri)
                 {
-                    ball.ReboundBatOrTop();
+                    bool colLS = ballBound.intersects(brickArr.GGB_LS(i));
+                    bool colRS = ballBound.intersects(brickArr.GGB_RS(i));
 
-                    //brickArr.brickArray[i] = NULLptr;
-
-                    for (int j = i; j < aSize - 1; j++)
+                    if (colLS || colRS)
                     {
-                        brickArr.brickArray[j] = brickArr.brickArray[j + 1];
+                        ball.ReboundSides();
                     }
-                    //delete[i] brickArr.brickArray;
+                    else
+                    {
+                        ball.ReboundBatOrTop();
+                    }
+
+                    for (int j = i; j < aSize - 1;   j++)
+                    {
+                        brickArr.brickArray[j] = brickArr.brickArray[j + 1]; 
+                    }
                     --aSize;
                     score++;
                 }
@@ -182,8 +201,10 @@ int main()
         for (int i = 0; i < aSize; i++)
         {
             window.draw(brickArr.GetShape(i));
+            
         }
-
+        //window.draw(brickArr.GS_LS(1));
+        //window.draw(brickArr.GS_RS(1));
         window.display();
     }
 
