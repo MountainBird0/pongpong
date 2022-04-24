@@ -12,9 +12,6 @@ Ball::Ball(float x, float y, Bat &bat)
 	dir.x /= length;
 	dir.y /= length;
 
-	/*dir.x = 0.f;
-	dir.y = 0.f;*/
-
 	shape.setSize(Vector2f(10, 10));
 	shape.setPosition(position);
 	shape.setFillColor(Color::White);
@@ -35,19 +32,28 @@ Vector2f Ball::GetSpeed()
 	return dir;
 }
 
-void Ball::MoveBall(bool move, Keyboard::Key keyCode)
+void Ball::InitialLeftDir()
+{
+	dir.x = -1.f;
+	dir.y = -1.f;
+}
+
+void Ball::InitialRightDir()
+{
+	dir.x = 1.f;
+	dir.y = -1.f;
+}
+
+void Ball::MoveBall(bool move)
 {
 	isMoving = move;
-	if(Keyboard::Right)
-	{
-		dir.x *= 1.f;		//단위벡터를 만들자.
-		dir.y *= -1.f;
-	}
-	if (Keyboard::Left)
-	{
-		dir.x *= -1.f;		//단위벡터를 만들자.
-		dir.y *= -1.f;
-	}
+	
+}
+
+void Ball::StopBall()
+{
+	dir.x *= 0.f;
+	dir.y *= 0.f;
 }
 
 float Ball::GetPosition(float x, float y)
@@ -67,7 +73,6 @@ void Ball::ReboundBatOrTop()
 
 void Ball::Reboundbottom()
 {
-	//dir.y *= -1.f;
 	position = originalPosition;
 	isMoving = false;
 }
@@ -77,8 +82,7 @@ void Ball::Update(float dt)
 	if (isMoving)
 	{
 		// 판 참조, 변환 함수
-		position += dir * dt * speed;
-		
+		position += dir * dt * speed;	
 	}
 	else
 	{
