@@ -25,9 +25,7 @@ void Bat::SetMoveDir(Sides side)
 
 void Bat::StopBat()
 {
-	isMoving = false;
-	dir.x *= 0.f;
-	dir.y *= 0.f;
+	speed = 0;
 }
 
 void Bat::Update(float dt)
