@@ -23,6 +23,13 @@ void Bat::SetMoveDir(Sides side)
 	moveDir = side;
 }
 
+void Bat::StopBat()
+{
+	isMoving = false;
+	dir.x *= 0.f;
+	dir.y *= 0.f;
+}
+
 void Bat::Update(float dt)
 {
 	Vector2f dir;

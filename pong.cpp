@@ -27,21 +27,41 @@ int main()
     textScore.setFont(fontDIGI);
     Text textLife;
     textLife.setFont(fontDIGI);
+    Text textClear;
+    textClear.setFont(fontDIGI);
+    Text textGameOver;
+    textGameOver.setFont(fontDIGI);
+    Text textGameTitle;
+    textGameTitle.setFont(fontDIGI);
+
 
     textMessage.setString("press enter to start");
     textScore.setString("score = 0");
     textLife.setString("Life = 3");
+    textClear.setString("Clear!");
+    textGameOver.setString("GameOver!");
+    textGameTitle.setString("Pong Pong");
 
     textMessage.setCharacterSize(75);
     textScore.setCharacterSize(50);
     textLife.setCharacterSize(50);
+    textClear.setCharacterSize(100);
+    textGameOver.setCharacterSize(100);
+    textGameTitle.setCharacterSize(200);
 
     textMessage.setFillColor(Color::White);
     textScore.setFillColor(Color::White);
     textLife.setFillColor(Color::White);
+    textClear.setFillColor(Color::Yellow);
+    textGameOver.setFillColor(Color::Red);
+    textGameTitle.setFillColor(Color::Blue);
 
+    textMessage.setPosition(800, 800);
     textScore.setPosition(20, 20);
     textLife.setPosition(20, 80);
+    textClear.setPosition(800, 500);
+    textGameOver.setPosition(700, 500);
+    textGameTitle.setPosition(700, 100);
 
     // 윈도우 생성
     RenderWindow window(VideoMode(1920, 1080), "Pong!", Style::Fullscreen);
@@ -57,7 +77,6 @@ int main()
     bool prevColSide = false;
     bool prevColTop = false;
     bool prevColBat = false;
-
     bool prevColBri = false;
 
     Clock clock; // 시계 시작
@@ -92,7 +111,8 @@ int main()
             {
                 if (!ball.IsMoving())
                 {
-                    ball.MoveBall(true, Keyboard::Left);
+                    ball.MoveBall(true);
+                    ball.InitialLeftDir();
                 }
 
                 dir = Sides::LEFT;
@@ -102,7 +122,8 @@ int main()
             {
                 if (!ball.IsMoving())
                 {
-                    ball.MoveBall(true, Keyboard::Right);
+                    ball.MoveBall(true);
+                    ball.InitialRightDir();
                 }
                 dir = Sides::RIGHT;
             }
@@ -115,12 +136,7 @@ int main()
             bool colSide = ballBound.left < 0.f || ballBound.left + ballBound.width > windowSize.x;
             bool colTop = ballBound.top < 0.f;
             bool colBat = ballBound.intersects(bat.GetGlobalBounds());
-
-            //양옆          
-            /*shapeLS.setPosition(0.f, 0.f);
-            shapeRS.setSize(Vector2f(1920, 380));*/
-            //shapeRS.setPosition(270.f, 0.f);
-                     
+                   
             //오른쪽, 왼쪽 벽에 부딪혔을때.
             if (!prevColSide && colSide)
             {
@@ -188,7 +204,21 @@ int main()
             ls << "Life = " << life;
             textLife.setString(ls.str());
 
-        
+            stringstream clear;
+            clear << "Clear!";
+            textClear.setString(clear.str());
+
+            stringstream gameover;
+            gameover << "GameOver!";
+            textGameOver.setString(gameover.str());
+
+            if (aSize == 0 || life == 0)
+            {
+                ball.StopBall();
+                bat.StopBat();
+            }
+
+
         //draw
         window.clear();
 
@@ -203,8 +233,18 @@ int main()
             window.draw(brickArr.GetShape(i));
             
         }
-        //window.draw(brickArr.GS_LS(1));
-        //window.draw(brickArr.GS_RS(1));
+        //window.draw(brickArr.GS_LS(4));
+        //window.draw(brickArr.GS_RS(4));
+
+        if (score == 50)
+        {
+            window.draw(textClear);
+        }
+        if (life == 0)
+        {
+            window.draw(textGameOver);
+        }
+
         window.display();
     }
 

@@ -6,7 +6,7 @@ using namespace sf;
 class brick
 {
 private:
-	Vector2f position;					//좌표찍어주기
+	Vector2f position;			 //좌표찍어주기
 	RectangleShape shape;        //사각형 그려주기
 
 	Vector2f positionLS;

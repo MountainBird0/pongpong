@@ -8,7 +8,7 @@ brick::brick(float x, float y, float xl, float yl, float xr, float yr)
 
 brick::brick()
 {
-	shape.setSize(Vector2f(100.f, 50.f));
+	shape.setSize(Vector2f(100.f, 20.f));
 	shape.setPosition(position);
 	shape.setFillColor(Color::White);
 

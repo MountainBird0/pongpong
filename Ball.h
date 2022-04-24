@@ -27,16 +27,21 @@ public:
 	
 	Vector2f GetSpeed();
 
-	void MoveBall(bool move, Keyboard::Key keyCode = Keyboard::Right);
+	void MoveBall(bool move);
 	float GetPosition(float x, float y);
 
 	void ReboundSides();
 	void ReboundBatOrTop();
 	void Reboundbottom();
 
+	void StopBall();
+
 	void Update(float dt);
 
 	bool IsMoving() { return isMoving; }
+
+	void InitialLeftDir();
+	void InitialRightDir();
 
 };
 

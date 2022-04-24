@@ -15,8 +15,9 @@ class Bat
 {
 private:
 	Vector2f position;
+	Vector2f dir;
 	RectangleShape shape; //Rectangle 그리기 함수
-
+	bool isMoving = false;
 	float speed = 1000.f;
 	Sides moveDir = Sides::NONE;
 public:
@@ -24,6 +25,9 @@ public:
 
 	FloatRect GetGlobalBounds();//충돌 체크하기 위해
 	const RectangleShape & GetShape();
+
+	bool IsMoving() { return isMoving; }
+	void StopBat();
 
 	void SetMoveDir(Sides side);
 	void Update(float dt);

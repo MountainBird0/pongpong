@@ -35,19 +35,28 @@ Vector2f Ball::GetSpeed()
 	return dir;
 }
 
-void Ball::MoveBall(bool move, Keyboard::Key keyCode)
+void Ball::InitialLeftDir()
+{
+	dir.x = -1.f;
+	dir.y = -1.f;
+}
+
+void Ball::InitialRightDir()
+{
+	dir.x = 1.f;
+	dir.y = -1.f;
+}
+
+void Ball::MoveBall(bool move)
 {
 	isMoving = move;
-	if(Keyboard::Right)
-	{
-		dir.x *= 1.f;		//단위벡터를 만들자.
-		dir.y *= -1.f;
-	}
-	if (Keyboard::Left)
-	{
-		dir.x *= -1.f;		//단위벡터를 만들자.
-		dir.y *= -1.f;
-	}
+	
+}
+
+void Ball::StopBall()
+{
+	dir.x *= 0.f;
+	dir.y *= 0.f;
 }
 
 float Ball::GetPosition(float x, float y)
