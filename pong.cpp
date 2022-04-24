@@ -16,8 +16,7 @@ using namespace std;
 // 중심점이 어디들어갔는지 판단
 
 int main()
-{
-    
+{   
     Font fontDIGI; // 폰트 파일 불러옴
     fontDIGI.loadFromFile("fonts/DS-DIGI.TTF");
 
@@ -35,7 +34,7 @@ int main()
     textGameTitle.setFont(fontDIGI);
 
 
-    textMessage.setString("press enter to start");
+    textMessage.setString("press <- or -> to start");
     textScore.setString("score = 0");
     textLife.setString("Life = 3");
     textClear.setString("Clear!");
@@ -56,18 +55,19 @@ int main()
     textGameOver.setFillColor(Color::Red);
     textGameTitle.setFillColor(Color::Blue);
 
-    textMessage.setPosition(800, 800);
+    
     textScore.setPosition(20, 20);
     textLife.setPosition(20, 80);
     textClear.setPosition(800, 500);
     textGameOver.setPosition(700, 500);
-    textGameTitle.setPosition(700, 100);
+    textMessage.setPosition(650, 800);
+    textGameTitle.setPosition(580, 500);
 
     // 윈도우 생성
     RenderWindow window(VideoMode(1920, 1080), "Pong!", Style::Fullscreen);
     //window.setFramerateLimit(60); // 주어진 프레임 비율로 실행
     
-    Bat bat(1920.f * 0.5f, 1080.f - 100.f);
+    Bat bat(1920.f * 0.4f, 1080.f - 100.f);
     Ball ball(1920.f * 0.5f, 970.f, bat);
 
     brickMgr brickArr(ySize, xSize);
@@ -83,6 +83,8 @@ int main()
 
     int score = 0;
     int life = 3;
+
+    
 
 
     // 게임루프
@@ -109,6 +111,9 @@ int main()
             Sides dir = Sides::NONE;
             if (Keyboard::isKeyPressed(Keyboard::Left))
             {
+                textMessage.setPosition(6500, 800);
+                textGameTitle.setPosition(5800, 500);
+
                 if (!ball.IsMoving())
                 {
                     ball.MoveBall(true);
@@ -120,6 +125,8 @@ int main()
 
             if (Keyboard::isKeyPressed(Keyboard::Right))
             {
+                textMessage.setPosition(6500, 800);
+                textGameTitle.setPosition(5800, 500);
                 if (!ball.IsMoving())
                 {
                     ball.MoveBall(true);
@@ -225,6 +232,9 @@ int main()
         window.draw(bat.GetShape());
         window.draw(ball.GetShape());
 
+        window.draw(textGameTitle);
+        window.draw(textMessage);
+        
         window.draw(textScore);
         window.draw(textLife);
 

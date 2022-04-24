@@ -16,7 +16,7 @@ private:
 	Vector2f position;
 	RectangleShape shape;
 
-	float speed = 500.f;
+	float speed = 300.f;
 	Vector2f dir;
 
 public:
@@ -42,6 +42,5 @@ public:
 
 	void InitialLeftDir();
 	void InitialRightDir();
-
 };
 

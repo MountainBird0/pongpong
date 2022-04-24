@@ -12,9 +12,6 @@ Ball::Ball(float x, float y, Bat &bat)
 	dir.x /= length;
 	dir.y /= length;
 
-	/*dir.x = 0.f;
-	dir.y = 0.f;*/
-
 	shape.setSize(Vector2f(10, 10));
 	shape.setPosition(position);
 	shape.setFillColor(Color::White);
@@ -76,7 +73,6 @@ void Ball::ReboundBatOrTop()
 
 void Ball::Reboundbottom()
 {
-	//dir.y *= -1.f;
 	position = originalPosition;
 	isMoving = false;
 }
@@ -86,8 +82,7 @@ void Ball::Update(float dt)
 	if (isMoving)
 	{
 		// 판 참조, 변환 함수
-		position += dir * dt * speed;
-		
+		position += dir * dt * speed;	
 	}
 	else
 	{

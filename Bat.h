@@ -23,7 +23,7 @@ private:
 public:
 	Bat(float x, float y);
 
-	FloatRect GetGlobalBounds();//충돌 체크하기 위해
+	FloatRect GetGlobalBounds(); //충돌 체크하기 위해
 	const RectangleShape & GetShape();
 
 	bool IsMoving() { return isMoving; }
